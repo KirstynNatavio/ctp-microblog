@@ -12,26 +12,28 @@ module.exports = {
     router.post('/', Redirect.ifNotLoggedIn('/login'), this.create);
     router.get('/:username/:slug', this.show);
     router.get('/:username/:slug/edit',
-                Redirect.ifNotLoggedIn('/login'),
-                Redirect.ifNotAuthorized('/posts'),
-                this.edit
-              );
+      Redirect.ifNotLoggedIn('/login'),
+      Redirect.ifNotAuthorized('/posts'),
+      this.edit
+    );
     router.put('/:username/:slug',
-                Redirect.ifNotLoggedIn('/login'),
-                Redirect.ifNotAuthorized('/posts'),
-                this.update
-              );
+      Redirect.ifNotLoggedIn('/login'),
+      Redirect.ifNotAuthorized('/posts'),
+      this.update
+    );
     router.delete('/:username/:slug',
-                   Redirect.ifNotLoggedIn('/login'),
-                   Redirect.ifNotAuthorized('/posts'),
-                   this.delete
-                  );
+      Redirect.ifNotLoggedIn('/login'),
+      Redirect.ifNotAuthorized('/posts'),
+      this.delete
+    );
 
     return router;
   },
   index(req, res) {
     models.Post.findAll({
-      include: [{model: models.User}]
+      include: [{ 
+        model: models.User, 
+      }],
     }).then((allPosts) => {
       res.render('posts', { allPosts });
     });
@@ -113,7 +115,8 @@ module.exports = {
     );
   },
   update(req, res) {
-    models.Post.update({
+    models.Post.update(
+    {
       title: req.body.title.toLowerCase(),
       slug: getSlug(req.body.title.toLowerCase()),
       body: req.body.body,
